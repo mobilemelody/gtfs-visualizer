@@ -1,0 +1,27 @@
+doctype html
+html(lang='en')
+  head
+    // Meta tags
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no')
+
+    title GTFS Visualizer
+
+    // Stylesheets
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css')
+    link(href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", rel="stylesheet", integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN", crossorigin="anonymous")
+
+  body
+    
+    // Navbar
+    nav.navbar.bg-light
+      div.navbar-brand GTFS Visualizer
+      ul.navbar-nav.ml-md-auto
+        li.nav-item
+          a.nav-link.btn.btn-lg(href='https://github.com/mobilemelody/gtfs-visualizer', target='_blank')
+            i.fa.fa-github
+
+    div.container.py-3
+
+    // Content
+    block content

@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.get('/', function (req, res) {
-  res.send('Hello, world!');
+  res.render('home');
 });
 
 app.listen(PORT, function(){
