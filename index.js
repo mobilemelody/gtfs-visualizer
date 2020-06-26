@@ -11,22 +11,26 @@ app.set('view engine', 'pug');
 
 app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
 app.use(bodyParser.json({ limit: '50mb' }));
-app.use(express.static('public'));
 
-app.get('/', function (req, res) {
-  res.render('home');
-});
-
-app.post('/', async function (req, res) {
-  let data = {}
-
-  // USE TESTING DATA
+// Use data from test folder
+app.get('/', async function (req, res) {
   let trips = await csv().fromFile('test/trips.txt');
   let times = await csv().fromFile('test/stop_times.txt');
+  let data = buildDataTable(trips, times);
+  res.render('visualizer', data);
+});
 
-  // Convert to JSON
-  // let trips = await csv().fromString(req.body["trips"]);
-  // let times = await csv().fromString(req.body["times"]);
+// Use data from form submission
+app.post('/', async function (req, res) {
+  let trips = await csv().fromString(req.body["trips"]);
+  let times = await csv().fromString(req.body["times"]);
+  let data = buildDataTable(trips, times);
+  res.render('visualizer', data);
+});
+
+// Function to create data table object from trips and times
+function buildDataTable(trips, times) {
+  let data = {}
 
   // Build data arrays by service ID
   data.service_ids = [];
@@ -48,18 +52,18 @@ app.post('/', async function (req, res) {
     // Get trip start time
     let start = times.find((e) => e.trip_id == trips[idx].trip_id).arrival_time;
     let [h, m, s] = start.split(':');
-    tripArr.push("Date(1970, 1, 1, " + h + ", " + m + ")");
+    tripArr.push("Date(0, 0, 0, " + h + ", " + m + ")");
 
     // Get trip end time
     let end = times.slice().reverse().find((e) => e.trip_id == trips[idx].trip_id).departure_time;
     [h, m, s] = end.split(':');
-    tripArr.push("Date(1970, 1, 1, " + h + ", " + m + ")");
+    tripArr.push("Date(0, 0, 0, " + h + ", " + m + ")");
 
     data.blocks[service_id].push(tripArr);
   }
 
-  res.render('visualizer', data);
-});
+  return data;
+}
 
 app.listen(PORT, function(){
   console.log('Express started on http://localhost:' + PORT + '; press Ctrl-C to terminate.');
