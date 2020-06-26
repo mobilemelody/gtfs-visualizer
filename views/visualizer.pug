@@ -1,0 +1,25 @@
+extends layout.pug
+
+block content
+  div
+    p service id: #{service_ids[0]}
+
+  div#timeline
+
+  script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
+  script(type='text/javascript').
+    google.charts.load("current", { packages:["timeline"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+
+      let container = document.getElementById('timeline');
+      let chart = new google.visualization.Timeline(container);
+      let service_id = #{service_ids[0]};
+      let dataTable = new google.visualization.arrayToDataTable(!{JSON.stringify(blocks[service_ids[0]])});
+
+      let options = {
+        timeline: { colorByRowLabel: true }
+      }
+
+      chart.draw(dataTable, options);
+    }

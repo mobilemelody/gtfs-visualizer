@@ -14,8 +14,8 @@ html(lang='en')
   body
     
     // Navbar
-    nav.navbar.bg-light
-      div.navbar-brand GTFS Visualizer
+    nav.navbar.navbar-light.bg-light
+      a.navbar-brand(href='/') GTFS Visualizer
       ul.navbar-nav.ml-md-auto
         li.nav-item
           a.nav-link.btn.btn-lg(href='https://github.com/mobilemelody/gtfs-visualizer', target='_blank')
@@ -23,5 +23,5 @@ html(lang='en')
 
     div.container.py-3
 
-    // Content
-    block content
+      // Content
+      block content
