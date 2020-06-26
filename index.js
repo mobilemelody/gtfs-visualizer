@@ -36,7 +36,7 @@ app.post('/', async function (req, res) {
 
     // Get service ID
     let service_id = trips[idx].service_id;
-    if (!(data.service_ids.includes(service_id))) {
+    if (!data.service_ids.includes(service_id)) {
       data.service_ids.push(service_id);
       data.blocks[service_id] = [["block", "trip", {type:'date', label: 'start'}, {type: 'date', label: 'end'}]];
     }

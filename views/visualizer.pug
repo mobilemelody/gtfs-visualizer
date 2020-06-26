@@ -1,8 +1,13 @@
 extends layout.pug
 
 block content
-  div
-    p service id: #{service_ids[0]}
+  form.form-inline.mb-2
+    div.form-group.mr-2
+      label.mr-2(for='serviceIdSelect') Service ID:
+      select#serviceIdSelect.form-control
+        each id in service_ids
+          option #{id}
+    button.btn.btn-secondary(type='submit') Update
 
   div#timeline
 
@@ -15,10 +20,19 @@ block content
       let container = document.getElementById('timeline');
       let chart = new google.visualization.Timeline(container);
       let service_id = #{service_ids[0]};
-      let dataTable = new google.visualization.arrayToDataTable(!{JSON.stringify(blocks[service_ids[0]])});
+      let blocks = !{JSON.stringify(blocks[service_ids[0]])};
+      let dataTable = new google.visualization.arrayToDataTable(blocks);
+
+      let block_ids = [];
+      for (idx in blocks) {
+        if (!block_ids.includes(blocks[idx][0])) {
+          block_ids.push(blocks[idx][0]);
+        }
+      }
 
       let options = {
-        timeline: { colorByRowLabel: true }
+        timeline: { colorByRowLabel: true },
+        height: block_ids.length * 42
       }
 
       chart.draw(dataTable, options);
