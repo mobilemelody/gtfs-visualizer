@@ -58,8 +58,6 @@ app.post('/', async function (req, res) {
     data.blocks[service_id].push(tripArr);
   }
 
-  console.log(data.service_ids);
-
   res.render('visualizer', data);
 });
 

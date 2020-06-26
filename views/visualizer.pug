@@ -5,9 +5,13 @@ block content
     div.form-group.mr-2
       label.mr-2(for='serviceIdSelect') Service ID:
       select#serviceIdSelect.form-control
-        each id in service_ids
-          option #{id}
-    button.btn.btn-secondary(type='submit') Update
+        each id, idx in service_ids
+          if idx == 0
+            option(value=id, selected) #{id}
+          else
+            option(value=id) #{id}
+    a.btn.btn-light(onclick='drawChart()')
+      i.fa.fa-repeat
 
   div#timeline
 
@@ -17,12 +21,13 @@ block content
     google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
 
-      let container = document.getElementById('timeline');
-      let chart = new google.visualization.Timeline(container);
-      let service_id = #{service_ids[0]};
-      let blocks = !{JSON.stringify(blocks[service_ids[0]])};
-      let dataTable = new google.visualization.arrayToDataTable(blocks);
+      // Get selected service ID and trips
+      let service_select = document.getElementById('serviceIdSelect');
+      let service_id = service_select.options[service_select.selectedIndex].value;
+      let all_blocks = !{JSON.stringify(blocks)};
+      let blocks = all_blocks[service_id];
 
+      // Get unique block IDs
       let block_ids = [];
       for (idx in blocks) {
         if (!block_ids.includes(blocks[idx][0])) {
@@ -30,8 +35,13 @@ block content
         }
       }
 
+      // Set up and draw timeline
+      let container = document.getElementById('timeline');
+      let chart = new google.visualization.Timeline(container);
+      let dataTable = new google.visualization.arrayToDataTable(blocks);
+
       let options = {
-        timeline: { colorByRowLabel: true },
+        timeline: { colorByRowLabel: true, showBarLabels: false },
         height: block_ids.length * 42
       }
 
