@@ -10,7 +10,7 @@ block content
             option(value=id, selected) #{id} (#{num_trips[idx]} trips)
           else
             option(value=id) #{id} (#{num_trips[idx]} trips)
-    a.btn.btn-light(onclick='drawChart()')
+    a.btn.btn-light(onclick='drawChart()', style='cursor: pointer;')
       i.fa.fa-repeat
 
   div#timeline
@@ -30,7 +30,7 @@ block content
       // Get unique block IDs
       let block_ids = [];
       for (idx in blocks) {
-        if (!block_ids.includes(blocks[idx][0])) {
+        if (!block_ids.includes(blocks[idx][0]) && idx > 0) {
           block_ids.push(blocks[idx][0]);
         }
       }
