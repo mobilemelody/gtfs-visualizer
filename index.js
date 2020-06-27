@@ -34,6 +34,7 @@ function buildDataTable(trips, times) {
 
   // Build data arrays by service ID
   data.service_ids = [];
+  data.num_trips = [];
   data.blocks = {};
   for (const idx in trips) {
     let tripArr = [];
@@ -42,12 +43,14 @@ function buildDataTable(trips, times) {
     let service_id = trips[idx].service_id;
     if (!data.service_ids.includes(service_id)) {
       data.service_ids.push(service_id);
+      data.num_trips.push(0);
       data.blocks[service_id] = [["block", "trip", {type:'date', label: 'start'}, {type: 'date', label: 'end'}]];
     }
 
     // Add block and trip IDs
     tripArr.push(trips[idx].block_id);
     tripArr.push(trips[idx].trip_id);
+    data.num_trips[data.service_ids.indexOf(service_id)]++;
 
     // Get trip start time
     let start = times.find((e) => e.trip_id == trips[idx].trip_id).arrival_time;
